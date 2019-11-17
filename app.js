@@ -52,6 +52,17 @@ app.post("/blogs", function(req,res){
     //redirect to index
 });
 
+//Show route
+app.get("/blogs/:id", function(req,res){
+    Blog.findById(req.params.id, function(err, foundBlog){
+        if(err){
+            res.redirect("/blogs");
+        } else{
+            res.render('show', {blog: foundBlog});
+        }
+    });
+});
+
 app.listen(port, function(){
     console.log('SERVER IS RUNNING');
 })
