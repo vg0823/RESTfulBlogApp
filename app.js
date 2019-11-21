@@ -1,8 +1,12 @@
 var bodyParser = require("body-parser"),
+methodOverride = require("method-override"),
 mongoose = require("mongoose"),
 express = require("express"),
 app = express();
+
 const port = 3000
+const Schema = mongoose.Schema;
+
 mongoose.set('useNewUrlParser', true)
 mongoose.set('useFindAndModify', false)
 mongoose.set('useCreateIndex', true)
@@ -12,8 +16,10 @@ mongoose.connect("mongodb://localhost/restful_blog_app");
 app.set("view engine","ejs");
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended:true}));
+app.use(methodOverride("_method"));
 //MONGOOSE MODEL CONFIG
 var blogSchema = new mongoose.Schema({
+    _id: {type: Schema.Types.ObjectId },
     title: String,
     image: String,
     body: String,
@@ -74,8 +80,18 @@ app.get("/blogs/:id/edit", function(req,res){
 });
 
 //Update route
-app.post("/blogs/:id/update", function(req,res){
-    res.send("UPDATE ROUTE");
+app.put("/blogs/:id", function(req,res){
+    //res.send("UPDATE ROUTE");
+    console.log("put request");
+    console.log(req.params);
+    Blog.findByIdAndUpdate(req.params.id, req.body.blog, function(err, updatedBlog){
+        console.log(err);
+        if(err){
+            res.redirect("/blogs");
+        } else{
+            res.redirect("/blogs/"+req.params.id);
+        }
+    });
 });
 
 app.listen(port, function(){
