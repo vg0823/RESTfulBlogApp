@@ -1,0 +1,7 @@
+index = /blogs, GET, List all blogs
+New = /blogs/new, GET, Show new blog form
+Create = /blogs, POST, Create a new blog
+Show = /blogs/:id, GET, Show info about one blog
+Edit = /blogs/:id/edit, GET, Show edit form for one blog
+Update = /blogs/:id, PUT, Update a particular blog then redirect somewhere
+Destroy = /blogs/:id, DELETE, Delete a particular blog then redirect somewhere
